@@ -2,8 +2,8 @@
 
 SOURCE_PATH="../"
 TESTER_NAME="ft_printf_tester"
+LOG_FILE="test_results.log"
 
-# Colori
 GREEN='\033[92m'
 RED='\033[91m'
 CYAN='\033[96m'
@@ -13,13 +13,19 @@ MAGENTA='\033[95m'
 BLUE='\033[94m'
 WHITE='\033[97m'
 
+echo "=== TEST SESSION STARTED: $(date) ===" > "$LOG_FILE"
+echo "Detailed logs below." >> "$LOG_FILE"
+echo "-----------------------------------" >> "$LOG_FILE"
+
 run_printf_tests() {
     MODE=$1
-    USE_VALGRIND=$2
+    USE_VALGRIND=$2 
     
     echo -e "\n${BLUE}**************************************************${RESET}"
     echo -e "${BLUE}        STARTING MODE: $MODE PART                 ${RESET}"
     echo -e "${BLUE}**************************************************${RESET}\n"
+
+    echo -e "\n\n>>> STARTING $MODE PART <<<\n" >> "$LOG_FILE"
 
     if [ "$MODE" == "BONUS" ]; then
         MAKE_RULE="bonus"
@@ -51,13 +57,12 @@ run_printf_tests() {
     fi
 
     cc -w $DEFINE_FLAG main.c $TEST_FILES -L"$SOURCE_PATH" -lftprintf -I. -I"$SOURCE_PATH" -o "$TESTER_NAME"
-    
     if [ $? -ne 0 ]; then
         echo -e "${RED}Error: Tester compilation failed!${RESET}"
         exit 1
     fi
     
-    echo -e "${CYAN} Running Tests...${RESET}"
+    echo -e "${CYAN}[3] Running Tests... (Logs appending to $LOG_FILE)${RESET}"
     if [ "$USE_VALGRIND" == "yes" ]; then
         echo -e "${MAGENTA}    (Valgrind Active)${RESET}"
     fi
@@ -66,26 +71,26 @@ run_printf_tests() {
 
         if [ "$MODE" == "MANDATORY" ]; then
             case $i in
-                1)   echo -e "\n${WHITE}--- Tests for %c ---${RESET}" ;;
-                16)  echo -e "\n\n${WHITE}--- Tests for %s ---${RESET}" ;;
-                31)  echo -e "\n\n${WHITE}--- Tests for %p ---${RESET}" ;;
-                46)  echo -e "\n\n${WHITE}--- Tests for %d ---${RESET}" ;;
-                61)  echo -e "\n\n${WHITE}--- Tests for %i ---${RESET}" ;;
-                76)  echo -e "\n\n${WHITE}--- Tests for %u ---${RESET}" ;;
-                91)  echo -e "\n\n${WHITE}--- Tests for %x ---${RESET}" ;;
-                106) echo -e "\n\n${WHITE}--- Tests for %X ---${RESET}" ;;
-                121) echo -e "\n\n${WHITE}--- Tests for %% ---${RESET}" ;;
-                131) echo -e "\n\n${WHITE}--- Mixed Tests ---${RESET}" ;;
+                1)   CURRENT_CAT="%c"; echo -e "\n${WHITE}--- Tests for %c ---${RESET}" ;;
+                16)  CURRENT_CAT="%s"; echo -e "\n\n${WHITE}--- Tests for %s ---${RESET}" ;;
+                31)  CURRENT_CAT="%p"; echo -e "\n\n${WHITE}--- Tests for %p ---${RESET}" ;;
+                46)  CURRENT_CAT="%d"; echo -e "\n\n${WHITE}--- Tests for %d ---${RESET}" ;;
+                61)  CURRENT_CAT="%i"; echo -e "\n\n${WHITE}--- Tests for %i ---${RESET}" ;;
+                76)  CURRENT_CAT="%u"; echo -e "\n\n${WHITE}--- Tests for %u ---${RESET}" ;;
+                91)  CURRENT_CAT="%x"; echo -e "\n\n${WHITE}--- Tests for %x ---${RESET}" ;;
+                106) CURRENT_CAT="%X"; echo -e "\n\n${WHITE}--- Tests for %X ---${RESET}" ;;
+                121) CURRENT_CAT="%%"; echo -e "\n\n${WHITE}--- Tests for %% ---${RESET}" ;;
+                131) CURRENT_CAT="Mix"; echo -e "\n\n${WHITE}--- Mixed Tests ---${RESET}" ;;
             esac
         elif [ "$MODE" == "BONUS" ]; then
             case $i in
-                1)   echo -e "\n${WHITE}--- Bonus: Minus Flag (-) ---${RESET}" ;;
-                26)  echo -e "\n\n${WHITE}--- Bonus: Zero Flag (0) ---${RESET}" ;;
-                51)  echo -e "\n\n${WHITE}--- Bonus: Dot Precision (.) ---${RESET}" ;;
-                76)  echo -e "\n\n${WHITE}--- Bonus: Hash Flag (#) ---${RESET}" ;;
-                101) echo -e "\n\n${WHITE}--- Bonus: Space ( ) ---${RESET}" ;;
-                126) echo -e "\n\n${WHITE}--- Bonus: Plus Flag (+) ---${RESET}" ;;
-                151) echo -e "\n\n${WHITE}--- Bonus: Multiple Flags ---${RESET}" ;;
+                1)   CURRENT_CAT="Bonus -"; echo -e "\n${WHITE}--- Bonus: Minus Flag (-) ---${RESET}" ;;
+                26)  CURRENT_CAT="Bonus 0"; echo -e "\n\n${WHITE}--- Bonus: Zero Flag (0) ---${RESET}" ;;
+                51)  CURRENT_CAT="Bonus ."; echo -e "\n\n${WHITE}--- Bonus: Dot Precision (.) ---${RESET}" ;;
+                76)  CURRENT_CAT="Bonus #"; echo -e "\n\n${WHITE}--- Bonus: Hash Flag (#) ---${RESET}" ;;
+                101) CURRENT_CAT="Bonus Space"; echo -e "\n\n${WHITE}--- Bonus: Space ( ) ---${RESET}" ;;
+                126) CURRENT_CAT="Bonus +"; echo -e "\n\n${WHITE}--- Bonus: Plus Flag (+) ---${RESET}" ;;
+                151) CURRENT_CAT="Bonus Combo"; echo -e "\n\n${WHITE}--- Bonus: Multiple Flags ---${RESET}" ;;
             esac
         fi
 
@@ -98,7 +103,7 @@ run_printf_tests() {
             ./"$TESTER_NAME" user $i $TYPE_FLAG > out_user.txt 2> ret_user.txt
         fi
 
-        PY_RESULT=$(python3 $CHECKER)
+        PY_RESULT=$(python3 $CHECKER "$i" "$CURRENT_CAT")
         echo -n "$i:$PY_RESULT "
 
         if [ "$USE_VALGRIND" == "yes" ]; then
@@ -114,9 +119,10 @@ run_printf_tests() {
     rm -f valgrind_log.txt
     rm -f out_orig.txt out_user.txt ret_orig.txt ret_user.txt "$TESTER_NAME"
 
-    echo -e "\n${CYAN} Cleaning up library (fclean)...${RESET}"
+    echo -e "\n${CYAN}Cleaning up library (fclean)...${RESET}"
     make fclean -C "$SOURCE_PATH" > /dev/null
     echo -e "${GREEN}Cleanup Done!${RESET}"
+    echo -e "${YELLOW}Check $LOG_FILE for full results (Mandatory + Bonus).${RESET}"
 }
 
 ARG_MODE=""

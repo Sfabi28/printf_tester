@@ -4,7 +4,6 @@
 void bonus_minus(int mode, int test_id)
 {
     int ret = 0;
-    int n = 42;
 
     // Test 1
     if (test_id == 1)
@@ -60,7 +59,7 @@ void bonus_minus(int mode, int test_id)
 
     // Test 14
     else if (test_id == 14)
-        TEST("%-1p", &n);
+        TEST("%-1p", (void *)0x12345);
 
     // Test 15
     else if (test_id == 15)
@@ -68,11 +67,11 @@ void bonus_minus(int mode, int test_id)
 
     // Test 16
     else if (test_id == 16)
-        TEST("%-20p", &n);
+        TEST("%-20p", (void *)0x12345);
 
     // Test 17
     else if (test_id == 17)
-        TEST("%-20p", (void *)NULL);
+        TEST("%-20p", (void *)0);
 
     // Test 18
     else if (test_id == 18)
