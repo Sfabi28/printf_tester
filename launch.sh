@@ -2,7 +2,10 @@
 
 SOURCE_PATH="../"
 
-# Colori aggiornati per matchare Python (Serie 9x invece di 3x)
+
+TESTS_DIR="mandatory_tests"
+TESTER_NAME="ft_printf_tester"
+
 GREEN='\033[92m'
 RED='\033[91m'
 CYAN='\033[96m'
