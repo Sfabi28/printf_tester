@@ -25,7 +25,7 @@ run_printf_tests() {
 
     echo -e "${CYAN} Checking Norminette...${RESET}"
     
-    
+     
     TESTER_DIR=$(basename "$PWD")
 
     FILES_TO_CHECK=$(find "$SOURCE_PATH" -type f \( -name "*.c" -o -name "*.h" \) | grep -v "/$TESTER_DIR/" | tr '\n' ' ')
