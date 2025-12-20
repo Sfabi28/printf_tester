@@ -21,6 +21,32 @@ run_printf_tests() {
     MODE=$1
     USE_VALGRIND=$2 
     
+    echo ""
+
+    echo -e "${CYAN} Checking Norminette...${RESET}"
+    
+    
+    TESTER_DIR=$(basename "$PWD")
+
+    FILES_TO_CHECK=$(find "$SOURCE_PATH" -type f \( -name "*.c" -o -name "*.h" \) | grep -v "/$TESTER_DIR/" | tr '\n' ' ')
+
+    if [ -z "$FILES_TO_CHECK" ]; then
+        NORM_OUT=""
+    else
+        NORM_OUT=$(norminette $FILES_TO_CHECK | grep -v "OK!" | grep -v "Error: ")
+    fi
+
+    if [ -z "$NORM_OUT" ]; then
+        echo -e "${GREEN}[NORM OK]${RESET}"
+    else
+        echo -e "${RED}[NORM KO]${RESET}"
+        echo "$NORM_OUT"
+        echo "--- NORMINETTE ERRORS ---" >> "$LOG_FILE"
+        echo "$NORM_OUT" >> "$LOG_FILE"
+        echo "-------------------------" >> "$LOG_FILE"
+    fi
+    echo ""
+
     echo -e "\n${BLUE}**************************************************${RESET}"
     echo -e "${BLUE}        STARTING MODE: $MODE PART                 ${RESET}"
     echo -e "${BLUE}**************************************************${RESET}\n"
@@ -62,7 +88,7 @@ run_printf_tests() {
         exit 1
     fi
     
-    echo -e "${CYAN}[3] Running Tests... (Logs appending to $LOG_FILE)${RESET}"
+    echo -e "${CYAN} Running Tests... (Logs appending to $LOG_FILE)${RESET}"
     if [ "$USE_VALGRIND" == "yes" ]; then
         echo -e "${MAGENTA}    (Valgrind Active)${RESET}"
     fi
