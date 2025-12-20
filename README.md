@@ -20,6 +20,12 @@ Ensure that the folder of this tester (`printf_tester`) is located **INSIDE** th
           ├── mandatory_tests/
           └── bonus_tests/
 ```
+Ensure that the path is right and set a proper timeout time **INSIDE** the `launch.sh` file
+
+```text
+   SOURCE_PATH="../"
+   TIME=3 (valgrind has x3)
+```
 
 ## 🚀 2. First Run
 

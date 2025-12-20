@@ -1,6 +1,11 @@
 #!/bin/bash
 
 SOURCE_PATH="../"
+TIME=3 #(valgrind has x3)
+
+
+
+
 TESTER_NAME="ft_printf_tester"
 LOG_FILE="test_results.log"
 
@@ -17,34 +22,36 @@ echo "=== TEST SESSION STARTED: $(date) ===" > "$LOG_FILE"
 echo "Detailed logs below." >> "$LOG_FILE"
 echo "-----------------------------------" >> "$LOG_FILE"
 
+echo ""
+
+echo -e "${CYAN} Checking Norminette...${RESET}"
+
+    
+TESTER_DIR=$(basename "$PWD")
+
+FILES_TO_CHECK=$(find "$SOURCE_PATH" -type f \( -name "*.c" -o -name "*.h" \) | grep -v "/$TESTER_DIR/" | tr '\n' ' ')
+
+if [ -z "$FILES_TO_CHECK" ]; then
+    NORM_OUT=""
+else
+    NORM_OUT=$(norminette $FILES_TO_CHECK | grep -v "OK!" | grep -v "Error: ")
+fi
+
+if [ -z "$NORM_OUT" ]; then
+    echo -e "${GREEN}[NORM OK]${RESET}"
+else
+    echo -e "${RED}[NORM KO]${RESET}"
+    echo "$NORM_OUT"
+    echo "--- NORMINETTE ERRORS ---" >> "$LOG_FILE"
+    echo "$NORM_OUT" >> "$LOG_FILE"
+    echo "-------------------------" >> "$LOG_FILE"
+fi
+echo ""
+
 run_printf_tests() {
     MODE=$1
     USE_VALGRIND=$2 
     
-    echo ""
-
-    echo -e "${CYAN} Checking Norminette...${RESET}"
-    
-     
-    TESTER_DIR=$(basename "$PWD")
-
-    FILES_TO_CHECK=$(find "$SOURCE_PATH" -type f \( -name "*.c" -o -name "*.h" \) | grep -v "/$TESTER_DIR/" | tr '\n' ' ')
-
-    if [ -z "$FILES_TO_CHECK" ]; then
-        NORM_OUT=""
-    else
-        NORM_OUT=$(norminette $FILES_TO_CHECK | grep -v "OK!" | grep -v "Error: ")
-    fi
-
-    if [ -z "$NORM_OUT" ]; then
-        echo -e "${GREEN}[NORM OK]${RESET}"
-    else
-        echo -e "${RED}[NORM KO]${RESET}"
-        echo "$NORM_OUT"
-        echo "--- NORMINETTE ERRORS ---" >> "$LOG_FILE"
-        echo "$NORM_OUT" >> "$LOG_FILE"
-        echo "-------------------------" >> "$LOG_FILE"
-    fi
     echo ""
 
     echo -e "\n${BLUE}**************************************************${RESET}"
@@ -122,11 +129,30 @@ run_printf_tests() {
 
         ./"$TESTER_NAME" orig $i $TYPE_FLAG > out_orig.txt 2> ret_orig.txt
         
+
         if [ "$USE_VALGRIND" == "yes" ]; then
-            valgrind -q --leak-check=full --show-leak-kinds=all --log-file=valgrind_log.txt \
-                ./"$TESTER_NAME" user $i $TYPE_FLAG > out_user.txt 2> ret_user.txt
+            CURRENT_TIME=$((TIME * 3))
         else
-            ./"$TESTER_NAME" user $i $TYPE_FLAG > out_user.txt 2> ret_user.txt
+            CURRENT_TIME=$TIME
+        fi
+
+        if [ "$USE_VALGRIND" == "yes" ]; then
+            timeout ${CURRENT_TIME} valgrind -q --leak-check=full --show-leak-kinds=all --log-file=valgrind_log.txt \
+                ./"$TESTER_NAME" user $i $TYPE_FLAG > out_user.txt 2> ret_user.txt
+            EXIT_CODE=$?
+        else
+            timeout ${CURRENT_TIME} ./"$TESTER_NAME" user $i $TYPE_FLAG > out_user.txt 2> ret_user.txt
+            EXIT_CODE=$?
+        fi
+
+        if [ $EXIT_CODE -eq 124 ]; then
+            echo -n "${RED}[TIMEOUT]${RESET} "
+            echo "Test $i: TIMEOUT (Infinite Loop?)" >> "$LOG_FILE"
+            continue
+        elif [ $EXIT_CODE -eq 139 ]; then
+            echo -n "${RED}[SIGSEGV]${RESET} "
+            echo "Test $i: CRASH (Segmentation Fault)" >> "$LOG_FILE"
+            continue
         fi
 
         PY_RESULT=$(python3 $CHECKER "$i" "$CURRENT_CAT")

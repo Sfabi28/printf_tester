@@ -6,6 +6,9 @@ int main(int argc, char **argv)
     if (argc < 4)
         return (1);
 
+    setbuf(stdout, NULL);
+    setbuf(stderr, NULL);
+
     int test_id = atoi(argv[2]);
     int mode = (strcmp(argv[1], "orig") != 0);
     char type = argv[3][0];
