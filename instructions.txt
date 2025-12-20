@@ -1,0 +1,48 @@
+=== FT_PRINTF TESTER ===
+
+1. INSTALLATION
+---------------
+Ensure that the folder of this tester ("printf_tester") is located INSIDE the root of your ft_printf project.
+
+Correct structure:
+/ft_printf_root
+    ├── Makefile
+    ├── ft_printf.h
+    ├── *.c (your source files)
+    └── printf_tester/       <--- YOU ARE HERE
+          ├── launch.sh
+          ├── main.c
+          ├── checker.py
+          └── mandatory_tests/
+
+2. FIRST RUN
+------------
+Grant execution permissions to the script:
+$ chmod +x launch.sh
+
+3. USAGE COMMANDS
+-----------------
+The tester supports different modes and optional integration with Valgrind.
+
+> Fast Execution (Without Valgrind):
+  ./launch.sh          -> Runs MANDATORY tests
+  ./launch.sh m        -> Runs MANDATORY tests
+  ./launch.sh b        -> Runs BONUS tests
+
+> Execution with Memory Check (Valgrind):
+  Add "val" as a parameter to activate memory leak checking.
+  
+  ./launch.sh val      -> MANDATORY + Valgrind
+  ./launch.sh m val    -> MANDATORY + Valgrind
+  ./launch.sh b val    -> BONUS + Valgrind
+
+4. RESULTS LEGEND
+-----------------
+[OK]   : The printed output and the return value (ret) are identical to the original printf.
+[KO]   : There is a discrepancy. The script will show the difference between ORIG and USER.
+
+If Valgrind is active:
+[MOK]  : Memory OK. No leaks and no invalid memory access errors.
+[MKO]  : Memory KO. Leaks, invalid read/write, or uninitialized variables found.
+
+Happy debugging!
