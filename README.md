@@ -20,6 +20,13 @@ Ensure that the folder of this tester (`printf_tester`) is located **INSIDE** th
           ├── mandatory_tests/
           └── bonus_tests/
 ```
+
+**Important:** To avoid accidentally committing the tester to your repository, add `printf_tester/` to your `.gitignore` file:
+
+```bash
+echo "printf_tester/" >> .gitignore
+```
+
 Ensure that the path is right and set a proper timeout time **INSIDE** the `launch.sh` file
 
 ```text
