@@ -1,0 +1,7 @@
+write
+malloc
+free
+va_args
+va_list
+va_start
+va_end
