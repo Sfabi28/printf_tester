@@ -5,7 +5,6 @@ TIME=3 #(valgrind has x3)
 
 
 
-
 TESTER_NAME="ft_printf_tester"
 LOG_FILE="test_results.log"
 
@@ -21,14 +20,11 @@ WHITE='\033[97m'
 echo "=== TEST SESSION STARTED: $(date) ===" > "$LOG_FILE"
 echo "Detailed logs below." >> "$LOG_FILE"
 echo "-----------------------------------" >> "$LOG_FILE"
-
 echo ""
 
 echo -e "${CYAN} Checking Norminette...${RESET}"
 
-    
 TESTER_DIR=$(basename "$PWD")
-
 FILES_TO_CHECK=$(find "$SOURCE_PATH" -type f \( -name "*.c" -o -name "*.h" \) | grep -v "/$TESTER_DIR/" | tr '\n' ' ')
 
 if [ -z "$FILES_TO_CHECK" ]; then
@@ -48,16 +44,75 @@ else
 fi
 echo ""
 
+check_allowed_function() {
+    echo -e "\n${BLUE}=== ALLOWED FUNCTIONS CHECK ===${RESET}"
+    
+    WHITELIST_FILE=".whitelist.txt"
+    LIB_PATH="${SOURCE_PATH:-../}"
+    BINARY="${LIB_PATH%/}/libftprintf.a"
+
+    if [ ! -f "$BINARY" ]; then
+        echo -e "${RED}Error: Library file '$BINARY' not found!${RESET}"
+        return
+    fi
+
+    UNDEFINED_FUNCS=$(nm -u "$BINARY" | grep -v ":" | awk '{print $NF}' | sort | uniq)
+    
+    MY_FUNCS=$(nm "$BINARY" | grep -v ":" | grep -E " [Tt] " | awk '{print $NF}' | sed 's/^_//' | sort | uniq)
+
+    VIOLATION=0
+    
+    if [ ! -f "$WHITELIST_FILE" ]; then
+        echo -e "${YELLOW}Warning: $WHITELIST_FILE not found. Skipping check.${RESET}"
+        return
+    fi
+
+    ALLOWED_FUNCS=$(cat "$WHITELIST_FILE")
+
+    for func in $UNDEFINED_FUNCS; do
+
+        clean_func=${func%%@*}
+        clean_func=${clean_func#_}
+
+        if [[ -z "$clean_func" || "$clean_func" == .* ]]; then
+            continue
+        fi
+
+        if [[ "$clean_func" == "dyld_stub_binder" || "$clean_func" == "gmon_start" || \
+              "$clean_func" == "data_start" || "$clean_func" == "edata" || \
+              "$clean_func" == "end" || "$clean_func" == "bss_start" || \
+              "$clean_func" == "stack_chk_fail" || "$clean_func" == "_stack_chk_fail" ]]; then
+            continue
+        fi
+
+        if echo "$MY_FUNCS" | grep -F -x -q "$clean_func"; then
+            continue
+        fi
+
+        if ! echo "$ALLOWED_FUNCS" | grep -F -x -q "$clean_func"; then
+            echo -e "${RED}Forbidden function used: $clean_func${RESET}"
+            VIOLATION=1
+        fi
+    done
+
+    if [ $VIOLATION -eq 0 ]; then
+        echo -e "No Forbidden Functions. ${GREEN}[OK]${RESET}"
+    else
+        echo -e "${RED}Forbidden functions detected!${RESET}"
+        if [ -n "$LOG_FILE" ]; then
+            echo "FORBIDDEN FUNCTIONS DETECTED" >> "$LOG_FILE"
+        fi
+    fi
+}
+
 run_printf_tests() {
     MODE=$1
     USE_VALGRIND=$2 
     
     echo ""
-
     echo -e "\n${BLUE}**************************************************${RESET}"
     echo -e "${BLUE}        STARTING MODE: $MODE PART                 ${RESET}"
     echo -e "${BLUE}**************************************************${RESET}\n"
-
     echo -e "\n\n>>> STARTING $MODE PART <<<\n" >> "$LOG_FILE"
 
     if [ "$MODE" == "BONUS" ]; then
@@ -83,6 +138,8 @@ run_printf_tests() {
         echo -e "${RED}Error: Make failed in $SOURCE_PATH${RESET}"
         exit 1
     fi
+
+    check_allowed_function
 
     if [ "$MODE" == "BONUS" ] && [ ! -d "bonus_tests" ]; then
          echo -e "${RED}Error: 'bonus_tests' directory missing!${RESET}"
@@ -129,7 +186,6 @@ run_printf_tests() {
 
         ./"$TESTER_NAME" orig $i $TYPE_FLAG > out_orig.txt 2> ret_orig.txt
         
-
         if [ "$USE_VALGRIND" == "yes" ]; then
             CURRENT_TIME=$((TIME * 3))
         else
