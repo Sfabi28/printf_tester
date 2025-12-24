@@ -80,3 +80,13 @@ Test ID: 87 [Bonus #] -> KO
    USER Ret: 7             <-- Return value of ft_printf
 ```
 Happy debugging!🖥️
+
+
+
+## 🛠️ More 42 Tools
+
+Explore my full suite of testers:
+
+[![libft](https://img.shields.io/badge/42-libft-blue?style=for-the-badge&logo=c)](https://github.com/Sfabi28/libft_tester)
+[![get_next_line](https://img.shields.io/badge/42-Get_Next_Line-green?style=for-the-badge&logo=c)](https://github.com/Sfabi28/gnl_tester)
+[![push_swap](https://img.shields.io/badge/42-push__swap-orange?style=for-the-badge&logo=c)](https://github.com/Sfabi28/push_swap_tester)
