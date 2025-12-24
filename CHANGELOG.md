@@ -8,13 +8,15 @@ All notable changes to this project will be documented in this file.
 ## [1.1.0] - 2025-12-24
 ### Added
 - **Auto-Updater**: The script now checks for updates automatically on startup.
-- **Smart Valgrind**: Valgrind only runs on memory-heavy functions (speed improvement).
+- **Developer Mode**: Added a warning when running the tester from a non-main branch.
+- **Library Check**: Improved forbidden function detection by analyzing internal library symbols to avoid false positives.
 
 ### Fixed
-- Corrected the path for the `libft.a` check.
+- Fixed compilation logic when testing single functions inside the static library.
 
 ## [1.0.0] - 2025-12-21
 ### Added
-- Initial release of the Libft Tester.
-- Support for Mandatory and Bonus parts.
+- Initial release of the ft_printf Tester.
+- Support for all mandatory conversions (%c, %s, %p, %d, %i, %u, %x, %X, %%).
+- Full Bonus support (flags: -, 0, ., #, +, space).
 - Norminette check integration.
