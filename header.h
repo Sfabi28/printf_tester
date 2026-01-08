@@ -5,7 +5,9 @@
 # include <limits.h>
 # include <stdlib.h>
 # include <string.h>
-# include "*.h"
+# include <stdarg.h>
+
+int ft_printf(const char *format, ...);
 
 # define TEST(F, ...) \
     do { \
