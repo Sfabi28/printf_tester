@@ -5,7 +5,7 @@
 # include <limits.h>
 # include <stdlib.h>
 # include <string.h>
-# include "ft_printf.h"
+# include "*.h"
 
 # define TEST(F, ...) \
     do { \

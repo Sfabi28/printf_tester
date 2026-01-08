@@ -2,8 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
-- *work in progress*
+## [1.2.0] - 2026-01-08
+### Fixed
+- Fixed error that made the tester crash if the header wasn't called "ft_printf.h"
 
 ## [1.1.0] - 2025-12-24
 ### Added
