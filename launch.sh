@@ -242,11 +242,11 @@ run_printf_tests() {
         fi
 
         if [ "$USE_VALGRIND" == "yes" ]; then
-            timeout ${CURRENT_TIME} valgrind -q --leak-check=full --show-leak-kinds=all --log-file=valgrind_log.txt \
-                ./"$TESTER_NAME" user $i $TYPE_FLAG > out_user.txt 2> ret_user.txt
+            (timeout ${CURRENT_TIME} valgrind -q --leak-check=full --show-leak-kinds=all --log-file=valgrind_log.txt \
+                ./"$TESTER_NAME" user $i $TYPE_FLAG > out_user.txt 2> ret_user.txt) 2> /dev/null
             EXIT_CODE=$?
         else
-            timeout ${CURRENT_TIME} ./"$TESTER_NAME" user $i $TYPE_FLAG > out_user.txt 2> ret_user.txt
+            (timeout ${CURRENT_TIME} ./"$TESTER_NAME" user $i $TYPE_FLAG > out_user.txt 2> ret_user.txt) 2> /dev/null
             EXIT_CODE=$?
         fi
 

@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-01-12
+### Fixed
+- Silenced valgrind messages if timeout or segfault happen
+
 ## [1.2.0] - 2026-01-08
 ### Fixed
 - Fixed error that made the tester crash if the header wasn't called "ft_printf.h"
