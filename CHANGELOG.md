@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [1.4.0] - 2026-01-13
+### Added
+- **Executable**: Now the tester is already executable
+
 ### Fixed
 - Silenced valgrind messages if segfault happen
 

@@ -36,16 +36,7 @@ Ensure that the path is right and set a proper timeout time **INSIDE** the `laun
    TIME=3 (valgrind has x3)
 ```
 
-## 🚀 2. First Run
-
-
-Before running the tester for the first time, you must grant execution permissions to the main script:
-
-```bash
-chmod +x launch.sh
-```
-
-## ⚙️ 3. Usage Commands
+## ⚙️ 2. Usage Commands
 -----------------
 The tester supports different modes and optional integration with Valgrind.
 
@@ -61,7 +52,7 @@ Command,Description
 ./launch.sh b val,Runs BONUS tests with Valgrind.
 ```
 
-## 📊 4. Results Legend
+## 📊 3. Results Legend
 -----------------
 ```text
 [OK]   : The printed output and the return value (ret) are identical to the original printf.
@@ -72,7 +63,7 @@ If Valgrind is active:
 [MKO]  : Memory KO. Leaks, invalid read/write, or uninitialized variables found.
 ```
 
-## 📝 5. Debugging with Logs
+## 📝 4. Debugging with Logs
 -----------
 ```text
 Test ID: 87 [Bonus #] -> KO
