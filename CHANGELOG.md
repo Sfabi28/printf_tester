@@ -2,9 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2026-01-13
+### Fixed
+- Silenced valgrind messages if segfault happen
+
 ## [1.3.0] - 2026-01-12
 ### Fixed
-- Silenced valgrind messages if timeout or segfault happen
+- Silenced valgrind messages if timeout happen
 
 ## [1.2.0] - 2026-01-08
 ### Fixed

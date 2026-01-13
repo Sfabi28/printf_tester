@@ -243,19 +243,19 @@ run_printf_tests() {
 
         if [ "$USE_VALGRIND" == "yes" ]; then
             (timeout ${CURRENT_TIME} valgrind -q --leak-check=full --show-leak-kinds=all --log-file=valgrind_log.txt \
-                ./"$TESTER_NAME" user $i $TYPE_FLAG > out_user.txt 2> ret_user.txt) 2> /dev/null
+                ./"$TESTER_NAME" user $i $TYPE_FLAG > out_user.txt 2> ret_user.txt) 2>/dev/null
             EXIT_CODE=$?
         else
-            (timeout ${CURRENT_TIME} ./"$TESTER_NAME" user $i $TYPE_FLAG > out_user.txt 2> ret_user.txt) 2> /dev/null
+            (timeout ${CURRENT_TIME} ./"$TESTER_NAME" user $i $TYPE_FLAG > out_user.txt 2> ret_user.txt) 2>/dev/null
             EXIT_CODE=$?
         fi
 
         if [ $EXIT_CODE -eq 124 ]; then
-            echo -n "${RED}[TIMEOUT]${RESET} "
+            echo -n -e "${RED}[TIMEOUT]${RESET} "
             echo "Test $i: TIMEOUT (Infinite Loop?)" >> "$LOG_FILE"
             continue
         elif [ $EXIT_CODE -eq 139 ]; then
-            echo -n "${RED}[SIGSEGV]${RESET} "
+            echo -n -e"${RED}[SIGSEGV]${RESET} "
             echo "Test $i: CRASH (Segmentation Fault)" >> "$LOG_FILE"
             continue
         fi
@@ -265,7 +265,7 @@ run_printf_tests() {
 
         if [ "$USE_VALGRIND" == "yes" ]; then
             if [ -s valgrind_log.txt ] && grep -qE "definitely lost|indirectly lost|invalid read|invalid write|uninitialised" valgrind_log.txt; then
-                 echo -n "${RED}[MKO]${RESET} "
+                 echo -n -e "${RED}[MKO]${RESET} "
             else
                  : 
             fi
