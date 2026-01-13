@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SOURCE_PATH="../"
-TIME=3 #(valgrind has x3)
+TIME=1 #(valgrind has x3)
 
 
 
@@ -251,11 +251,11 @@ run_printf_tests() {
         fi
 
         if [ $EXIT_CODE -eq 124 ]; then
-            echo -n -e "${RED}[TIMEOUT]${RESET} "
+            echo -n -e "$i:${RED}[TIMEOUT]${RESET} "
             echo "Test $i: TIMEOUT (Infinite Loop?)" >> "$LOG_FILE"
             continue
         elif [ $EXIT_CODE -eq 139 ]; then
-            echo -n -e"${RED}[SIGSEGV]${RESET} "
+            echo -n -e"$i:${RED}[SIGSEGV]${RESET} "
             echo "Test $i: CRASH (Segmentation Fault)" >> "$LOG_FILE"
             continue
         fi
