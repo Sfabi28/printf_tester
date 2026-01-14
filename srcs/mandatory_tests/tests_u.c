@@ -1,4 +1,4 @@
-#include "header.h"
+#include "srcs/header.h"
 #include <limits.h>
 
 void u_case(int mode, int test_id)

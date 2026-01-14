@@ -1,4 +1,4 @@
-#include "header.h"
+#include "srcs/header.h"
 #include <limits.h>
 
 void bonus_dot(int mode, int test_id)

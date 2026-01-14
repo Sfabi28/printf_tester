@@ -16,11 +16,10 @@ Ensure that the folder of this tester (`printf_tester`) is located **INSIDE** th
     ├── *.c (your source files)
     └── printf_tester/       <--- YOU ARE HERE
           ├── launch.sh
-          ├── main.c
-          ├── checker.py
-          ├── test_results.log (generated after run)
-          ├── mandatory_tests/
-          └── bonus_tests/
+          ├── README.md
+          ├── CHANGELOG.md
+          ├── test_result.log
+          └── srcs
 ```
 
 **Important:** To avoid accidentally committing the tester to your repository, add `printf_tester/` to your `.gitignore` file:

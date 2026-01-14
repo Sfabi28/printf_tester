@@ -96,7 +96,7 @@ echo ""
 check_allowed_function() {
     echo -e "\n${BLUE}=== ALLOWED FUNCTIONS CHECK ===${RESET}"
     
-    WHITELIST_FILE=".whitelist.txt"
+    WHITELIST_FILE="srcs/.whitelist.txt"
     LIB_PATH="${SOURCE_PATH:-../}"
     BINARY="${LIB_PATH%/}/libftprintf.a"
 
@@ -166,15 +166,15 @@ run_printf_tests() {
 
     if [ "$MODE" == "BONUS" ]; then
         MAKE_RULE="bonus"
-        TEST_FILES="mandatory_tests/*.c bonus_tests/*.c"
-        if [ -f "checker_bonus.py" ]; then CHECKER="checker_bonus.py"; else CHECKER="checker.py"; fi
+        TEST_FILES="srcs/mandatory_tests/*.c srcs/bonus_tests/*.c"
+        if [ -f "srcs/checker_bonus.py" ]; then CHECKER="srcs/checker_bonus.py"; else CHECKER="srcs/checker.py"; fi
         TYPE_FLAG="b"
         MAX_TESTS=200
         DEFINE_FLAG="-D BONUS"
     else
         MAKE_RULE="all"
-        TEST_FILES="mandatory_tests/*.c"
-        if [ -f "checker_mandatory.py" ]; then CHECKER="checker_mandatory.py"; else CHECKER="checker.py"; fi
+        TEST_FILES="srcs/mandatory_tests/*.c"
+        if [ -f "srcs/checker_mandatory.py" ]; then CHECKER="srcs/checker_mandatory.py"; else CHECKER="srcs/checker.py"; fi
         TYPE_FLAG="m"
         MAX_TESTS=160
         DEFINE_FLAG=""
@@ -190,12 +190,12 @@ run_printf_tests() {
 
     check_allowed_function
 
-    if [ "$MODE" == "BONUS" ] && [ ! -d "bonus_tests" ]; then
-         echo -e "${RED}Error: 'bonus_tests' directory missing!${RESET}"
+    if [ "$MODE" == "BONUS" ] && [ ! -d "srcs/bonus_tests" ]; then
+         echo -e "${RED}Error: 'srcs/bonus_tests' directory missing!${RESET}"
          exit 1
     fi
 
-    cc -w $DEFINE_FLAG main.c $TEST_FILES -L"$SOURCE_PATH" -lftprintf -I. -I"$SOURCE_PATH" -o "$TESTER_NAME"
+    cc -w $DEFINE_FLAG srcs/main.c $TEST_FILES -L"$SOURCE_PATH" -lftprintf -I. -I"$SOURCE_PATH" -o "$TESTER_NAME"
     if [ $? -ne 0 ]; then
         echo -e "${RED}Error: Tester compilation failed!${RESET}"
         exit 1

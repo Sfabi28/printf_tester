@@ -1,4 +1,4 @@
-#include "header.h"
+#include "srcs/header.h"
 #include <limits.h>
 
 void mix_case(int mode, int test_id)

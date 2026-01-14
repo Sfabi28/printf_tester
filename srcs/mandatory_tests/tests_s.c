@@ -1,4 +1,4 @@
-#include "header.h"
+#include "srcs/header.h"
 
 void s_case(int mode, int test_id)
 {

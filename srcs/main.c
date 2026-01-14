@@ -1,4 +1,4 @@
-#include "header.h"
+#include "srcs/header.h"
 
 int main(int argc, char **argv)
 {
