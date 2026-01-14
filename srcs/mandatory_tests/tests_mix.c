@@ -125,5 +125,9 @@ void mix_case(int mode, int test_id)
     else if (test_id == 160)
         TEST("%% %c %s %d %i %u %x %X %p %%", '!', "DONE", 1, 2, 3, 4, 5, (void *)0);
 
+    // Test 161: printf(NULL) should return -1
+    else if (test_id == 161)
+        TEST((char *)NULL);
+
     fprintf(stderr, "%d", ret);
 }

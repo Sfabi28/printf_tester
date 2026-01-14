@@ -34,8 +34,8 @@ int main(int argc, char **argv)
             X_case(mode, test_id);      // Tests hex upper
         else if (test_id <= 130)
             perc_case(mode, test_id);   // Tests percent
-        else if (test_id <= 160)
-            mix_case(mode, test_id);    // Mixed tests
+        else if (test_id <= 161)
+            mix_case(mode, test_id);    // Mixed tests (includes printf(NULL) test)
     }
 
 #ifdef BONUS

@@ -154,6 +154,9 @@ check_allowed_function() {
     fi
 }
 
+check_null() {
+}
+
 run_printf_tests() {
     MODE=$1
     USE_VALGRIND=$2 
