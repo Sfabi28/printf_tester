@@ -15,7 +15,8 @@ Ensure that the folder of this tester (`printf_tester`) is located **INSIDE** th
     ├── ft_printf.h
     ├── *.c (your source files)
     └── printf_tester/       <--- YOU ARE HERE
-          ├── launch.sh
+          ├── .launch.sh
+          ├── Makefile
           ├── README.md
           ├── CHANGELOG.md
           ├── test_result.log
@@ -41,14 +42,14 @@ The tester supports different modes and optional integration with Valgrind.
 
 ```text
 Command,Description
-./launch.sh,Runs ALL tests (Mandatory + Bonus).
-./launch.sh m,Runs MANDATORY tests only.
-./launch.sh b,Runs BONUS tests only.
+make,Runs ALL tests (Mandatory + Bonus).
+make m,Runs MANDATORY tests only.
+make b,Runs BONUS tests only.
 
 Command,Description
-./launch.sh val,Runs ALL tests with Valgrind checks.
-./launch.sh m val,Runs MANDATORY tests with Valgrind.
-./launch.sh b val,Runs BONUS tests with Valgrind.
+make val,Runs ALL tests with Valgrind checks.
+make m val,Runs MANDATORY tests with Valgrind.
+make b val,Runs BONUS tests with Valgrind.
 ```
 
 ## 📊 3. Results Legend
