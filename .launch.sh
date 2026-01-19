@@ -176,7 +176,7 @@ run_printf_tests() {
         TEST_FILES="srcs/mandatory_tests/*.c"
         if [ -f "srcs/checker_mandatory.py" ]; then CHECKER="srcs/checker_mandatory.py"; else CHECKER="srcs/checker.py"; fi
         TYPE_FLAG="m"
-        MAX_TESTS=160
+        MAX_TESTS=161
         DEFINE_FLAG=""
     fi
 

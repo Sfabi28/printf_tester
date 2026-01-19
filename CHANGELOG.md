@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.0] - 2026-01-19
+### Added
+- **NULL input check**: Implemented a NULL input check on return value
+
 ## [1.6.0] - 2026-01-14
 ### Fixed
 - Compilation error
