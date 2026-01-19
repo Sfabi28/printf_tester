@@ -17,6 +17,8 @@ MAGENTA='\033[95m'
 BLUE='\033[94m'
 WHITE='\033[97m'
 
+NC=$RESET
+
 check_dev_mode() {
     CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
@@ -52,8 +54,8 @@ check_updates() {
                 echo -e "${GREEN}Downloading updates...${NC}"
                 git pull
                 echo -e "\n${GREEN}✅ Update successful!${NC}"
-                echo -e "${CYAN}Please restart the tester to apply changes.${NC}"
-                exit 0
+		echo -e "${CYAN}Restarting the tester to apply changes...${NC}\n"
+                exec "$0" "$@"
             else
                 echo -e "${YELLOW}Update skipped. Continuing with current version...${NC}\n"
             fi
