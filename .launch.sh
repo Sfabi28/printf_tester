@@ -54,7 +54,7 @@ check_updates() {
                 echo -e "${GREEN}Downloading updates...${NC}"
                 git pull
                 echo -e "\n${GREEN}✅ Update successful!${NC}"
-		echo -e "${CYAN}Restarting the tester to apply changes...${NC}\n"
+		        echo -e "${CYAN}Restarting the tester to apply changes...${NC}\n"
                 exec "$0" "$@"
             else
                 echo -e "${YELLOW}Update skipped. Continuing with current version...${NC}\n"
