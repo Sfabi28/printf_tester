@@ -129,6 +129,10 @@ check_allowed_function() {
             continue
         fi
 
+        if [[ "$clean_func" == ft_* ]]; then
+            continue
+        fi
+
         if [[ "$clean_func" == "dyld_stub_binder" || "$clean_func" == "gmon_start" || \
               "$clean_func" == "data_start" || "$clean_func" == "edata" || \
               "$clean_func" == "end" || "$clean_func" == "bss_start" || \
